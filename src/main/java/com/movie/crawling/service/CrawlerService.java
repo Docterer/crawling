@@ -10,13 +10,11 @@ import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Site;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
