@@ -1,26 +1,26 @@
 package com.movie.crawling.service;
 
 import com.alibaba.fastjson.JSONObject;
+import com.movie.crawling.Utils.FileUtil;
 import com.movie.crawling.entity.ContentImg;
 import com.movie.crawling.entity.OnePunchMan;
-import org.springframework.stereotype.Service;
-import us.codecraft.webmagic.Spider;
-import us.codecraft.webmagic.processor.PageProcessor;
-import us.codecraft.webmagic.Page;
-import us.codecraft.webmagic.Site;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import java.io.ByteArrayOutputStream;
-import java.io.DataInputStream;
-import java.io.File;
-import java.io.FileOutputStream;
+import org.springframework.stereotype.Service;
+import us.codecraft.webmagic.Page;
+import us.codecraft.webmagic.Site;
+import us.codecraft.webmagic.Spider;
+import us.codecraft.webmagic.processor.PageProcessor;
+
+import java.io.*;
 import java.net.URL;
 import java.util.List;
 
 @Service
-public class CrawlerService implements PageProcessor{
+public class CrawlerService implements PageProcessor {
 
-    private String str;
+    private String str;//爬取下来的json
+    private String chapterName;
 
     private static Logger logger = LoggerFactory.getLogger(CrawlerService.class);// slf4j日志记录器
 
@@ -38,11 +38,20 @@ public class CrawlerService implements PageProcessor{
 
     public String downLoadImage(CrawlerService crawlerService,String url) {
         logger.info("Service://downLoadImage  url:{}",url);
+
         Spider.create(crawlerService).addUrl(url).thread(1).run();
         //1.将JSON字符串转为JSON对象
         JSONObject json = JSONObject.parseObject(str.trim());
         //2.将json对象转为java实体类
         OnePunchMan onePunchMan = (OnePunchMan)JSONObject.toJavaObject(json,OnePunchMan.class);
+
+        chapterName = "/Users/danyiran/Desktop/onePunch/" + onePunchMan.getData().getTitle();
+
+        try{
+            FileUtil.createNewFile(chapterName);
+        }catch (IOException e){
+            e.printStackTrace();
+        }
 
         List<ContentImg> contentImgList = onePunchMan.getData().getContentImg();
         URL imageDownloadPath = null;
@@ -51,7 +60,7 @@ public class CrawlerService implements PageProcessor{
             try {
                 imageDownloadPath = new URL(contentImg.getUrl());
                 DataInputStream dataInputStream = new DataInputStream(imageDownloadPath.openStream());
-                String imageName = "/Users/danyiran/Desktop/onePunch/" + contentImg.getName();
+                String imageName = chapterName + "/" + contentImg.getName();
                 FileOutputStream fileOutputStream = new FileOutputStream(new File(imageName));
                 ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
                 byte[] buffer = new byte[1024];
