@@ -12,10 +12,10 @@ public class CrawlerController {
     CrawlerService crawlerService;
 
     @RequestMapping("/go")
-    public String crawler(){
+    public String crawler() {
         crawlerService = new CrawlerService();
         String url = "https://prod-api.ishuhui.com/comics/detail?id=6775";
-        crawlerService.downLoadImage(crawlerService,url);
+        crawlerService.downLoadImage(crawlerService, url);
         return "成功啦";
     }
 }
