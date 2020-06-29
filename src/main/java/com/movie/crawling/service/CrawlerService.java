@@ -32,9 +32,8 @@ public class CrawlerService implements PageProcessor {
 
     @Override
     public Site getSite() {
-        return Site.me().setSleepTime(1000).setRetrySleepTime(3);
+        return Site.me().setCharset("UTF-8").setSleepTime(1000).setRetrySleepTime(3);
     }
-
 
     public String downLoadImage(CrawlerService crawlerService,String url) {
         logger.info("Service://downLoadImage  url:{}",url);
@@ -82,5 +81,36 @@ public class CrawlerService implements PageProcessor {
 
         logger.info("Service return onePunchMan:{}",onePunchMan);
         return "OK";
+    }
+
+    public void testService(CrawlerService crawlerService,String url){
+        Spider.create(crawlerService).addUrl(url).thread(1).run();
+//        try {
+//            FileUtil.createNewFileFromInternet(url,);
+//        }catch (IOException e){
+//
+//        }
+        try {
+            URL imageDownloadPath = new URL(url);
+            DataInputStream dataInputStream = new DataInputStream(imageDownloadPath.openStream());
+            String imageName = "/Users/danyiran/Desktop/mango/mango.html";
+            FileOutputStream fileOutputStream = new FileOutputStream(new File(imageName));
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            byte[] buffer = new byte[1024];
+            int length;
+
+            while ((length = dataInputStream.read(buffer)) > 0){
+                outputStream.write(buffer,0,length);
+            }
+
+            byte[] context = outputStream.toByteArray();
+            fileOutputStream.write(outputStream.toByteArray());
+            dataInputStream.close();
+            fileOutputStream.close();
+
+        }catch (Exception e){
+            logger.error("错误:",e);
+        }
+
     }
 }

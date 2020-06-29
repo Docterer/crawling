@@ -23,4 +23,12 @@ public class CrawlerController {
         return "共抓取 "+String.valueOf(NUM) +" 话";
     }
 
+    @RequestMapping("/test")
+    public String test() {
+        crawlerService = new CrawlerService();
+        String url = "https://ac.qq.com/ComicView/index/id/505430/cid/1";
+        crawlerService.testService(crawlerService,url);
+        return "测试";
+    }
+
 }

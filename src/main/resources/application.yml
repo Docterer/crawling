@@ -1,0 +1,18 @@
+
+#配置数据源
+#spring:
+#  datasource:
+#    url: jdbc:mysql://127.0.0.1:3306/test?useUnicode=true&characterEncoding=utf8
+#    username: root
+#    password: 123456
+#    driver-class-name: com.mysql.jdbc.Driver
+#
+#jasypt:
+#  encryptor:
+#    password: USTCINFO2019
+
+#配置OpenOffice的目录
+oppenOffice:
+  winPath: D:/SoftWare/OpenOffice
+  linuxPath: /usr/local/OpenOffice
+  port: 9200,9201,9202,9203,9204,9205,9206,9207,9208,9209
